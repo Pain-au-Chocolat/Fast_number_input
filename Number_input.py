@@ -1,11 +1,13 @@
 # Script made by Andrej Szegeny a.k.a Speed3DBall
 
-import pyautogui
 import tkinter as tk
 from tkinter import Toplevel
 from tkinter import PhotoImage
-import random
 from time import sleep
+from random import uniform
+from pyautogui import press, write
+
+image_path = 'parameters.png'
 
 
 def navod_click():
@@ -47,20 +49,20 @@ def START_click():
         if reseter:
             for i in range(int(rows)):
                 if i != int(rows)-1:
-                    pyautogui.press(['up'])
-            pyautogui.press(['right'])
+                    press(['up'])
+            press(['right'])
         for j in range(int(rows)):
-            pyautogui.write(str(value_Randomizer(float(lower_value),float(higher_value),int(decimals))))
+            write(str(value_Randomizer(float(lower_value),float(higher_value),int(decimals))))
             reseter = True
             if j != int(rows)-1:
-                pyautogui.press(['down'])
+                press(['down'])
 
     GUI_window.wm_state('zoomed')
     GUI_window.wm_state('normal')
 
 
 def value_Randomizer(low, high, decimal):
-    return round(random.uniform(float(low), float(high)), int(decimal))
+    return round(uniform(float(low), float(high)), int(decimal))
 
 
 GUI_window = tk.Tk()
@@ -70,7 +72,7 @@ GUI_window.title("Vkladac Cisel")
 GUI_window.configure(background='#28c6de')
 
 
-image = PhotoImage(file="C:\\Users\\Andrej\\Documents\\parameters.png")
+image = PhotoImage(file=image_path)
 
 name = tk.Label(GUI_window,
                  text="Vkladac cisel",
