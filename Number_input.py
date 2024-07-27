@@ -8,10 +8,6 @@ import random
 from time import sleep
 
 
-screenWidth, screenHeight = pyautogui.size() # Get the size of the primary monitor.
-print(screenWidth, screenHeight)
-
-
 def navod_click():
 
     newWindow = Toplevel(GUI_window)
@@ -254,7 +250,6 @@ START_button = tk.Button(GUI_window,
                    wraplength=100)
 
 
-
 name.grid(row=0, column=0,pady=10, columnspan=3)
 author.grid(row=0, column=0,pady=15, columnspan=3, sticky="S")
 info.grid(row=1, column=0,pady=3, columnspan=3)
@@ -270,6 +265,5 @@ columns_input.grid(row=6, column=1,columnspan=3, pady=2)
 decimals_label.grid(row=7, column=0, columnspan=2, pady=2)
 decimals_input.grid(row=7, column=1,columnspan=3, pady=2)
 START_button.grid(row=8, column=0, pady=7, columnspan=3)
-
 
 GUI_window.mainloop()
