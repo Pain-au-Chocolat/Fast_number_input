@@ -48,8 +48,6 @@ def START_click():
     switcher = "DOWN"
 
     for i in range(int(columns)):
-        if toggle_button.config('text')[-1] != 'RYCHLE':
-            sleep(0.2)
         for j in range(int(rows)):
             write(str(value_Randomizer(float(lower_value), float(higher_value), int(decimals))))
             if j != int(rows)-1:
@@ -64,18 +62,16 @@ def START_click():
                 elif switcher == "UP":
                     switcher = "DOWN"
 
-    GUI_window.wm_state('zoomed')
-    GUI_window.wm_state('normal')
-
 def value_Randomizer(low, high, decimal):
     return round(uniform(float(low), float(high)), int(decimal))
 
 def TurboSwitch():
     if toggle_button.config('text')[-1] == 'RYCHLE':
         toggle_button.config(text='STREDNE')
+        pyautogui.PAUSE = 0.05
     elif toggle_button.config('text')[-1] == 'STREDNE':
         toggle_button.config(text='POMALE')
-        pyautogui.PAUSE = 0.05
+        pyautogui.PAUSE = 0.10
     elif toggle_button.config('text')[-1] == 'POMALE':
         toggle_button.config(text='RYCHLE')
         pyautogui.PAUSE = 0.01
