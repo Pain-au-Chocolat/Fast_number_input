@@ -3,12 +3,14 @@
 import tkinter as tk
 from tkinter import Toplevel
 from tkinter import PhotoImage
+from tkinter import Button
 from time import sleep
 from random import uniform
+import pyautogui
 from pyautogui import press, write
 
 image_path = 'parameters.png'
-
+pyautogui.PAUSE = 0.01
 
 def navod_click():
 
@@ -43,34 +45,46 @@ def START_click():
 
     GUI_window.wm_state('iconic')
     sleep(3)
-    reseter = False
+    switcher = "DOWN"
 
     for i in range(int(columns)):
-        if reseter:
-            for i in range(int(rows)):
-                if i != int(rows)-1:
-                    press(['up'])
-            press(['right'])
+        if toggle_button.config('text')[-1] != 'RYCHLE':
+            sleep(0.2)
         for j in range(int(rows)):
-            write(str(value_Randomizer(float(lower_value),float(higher_value),int(decimals))))
-            reseter = True
+            write(str(value_Randomizer(float(lower_value), float(higher_value), int(decimals))))
             if j != int(rows)-1:
-                press(['down'])
+                if switcher == "DOWN":
+                    press(['down'])
+                elif switcher == "UP":
+                    press(['up'])
+            elif j == int(rows)-1:
+                press(['right'])
+                if switcher == "DOWN":
+                    switcher = "UP"
+                elif switcher == "UP":
+                    switcher = "DOWN"
 
     GUI_window.wm_state('zoomed')
     GUI_window.wm_state('normal')
 
-
 def value_Randomizer(low, high, decimal):
     return round(uniform(float(low), float(high)), int(decimal))
 
+def TurboSwitch():
+    if toggle_button.config('text')[-1] == 'RYCHLE':
+        toggle_button.config(text='STREDNE')
+    elif toggle_button.config('text')[-1] == 'STREDNE':
+        toggle_button.config(text='POMALE')
+        pyautogui.PAUSE = 0.05
+    elif toggle_button.config('text')[-1] == 'POMALE':
+        toggle_button.config(text='RYCHLE')
+        pyautogui.PAUSE = 0.01
 
 GUI_window = tk.Tk()
 GUI_window.geometry("600x510")
 GUI_window.resizable(False, False)
 GUI_window.title("Vkladac Cisel")
 GUI_window.configure(background='#28c6de')
-
 
 image = PhotoImage(file=image_path)
 
@@ -100,7 +114,6 @@ author = tk.Label(GUI_window,
                  relief=tk.RAISED,
                 )
 
-
 info = tk.Label(GUI_window,
                  text="!! Pri prvom spusteni si precitaj navod pre lepsie pochopenie programu !!",
                  anchor=tk.CENTER,
@@ -125,7 +138,7 @@ navod_button = tk.Button(GUI_window,
                    cursor="hand2",
                    disabledforeground="gray",
                    fg="black",
-                   font=("Arial", 12),
+                   font=("Arial", 12, "bold"),
                    height=2,
                    highlightbackground="black",
                    highlightcolor="green",
@@ -136,6 +149,21 @@ navod_button = tk.Button(GUI_window,
                    pady=5,
                    width=15,
                    wraplength=100)
+
+toggle_label = tk.Label(GUI_window,
+                 text="Rychlost vpisovania:",
+                 anchor=tk.CENTER,
+                 bg="gray",
+                 height=1,
+                 width=16,
+                 bd=1,
+                 font=("Arial", 10),
+                 fg="white",
+                 justify=tk.CENTER,
+                 relief=tk.RAISED,
+                )
+
+toggle_button = Button(text="RYCHLE", width=7, font=("Arial", 9, "bold"),bg="yellow",bd=3, command=TurboSwitch)
 
 higher_value_label = tk.Label(GUI_window,
                  text="Horna tolerancia:",
@@ -251,11 +279,12 @@ START_button = tk.Button(GUI_window,
                    width=7,
                    wraplength=100)
 
-
 name.grid(row=0, column=0,pady=10, columnspan=3)
 author.grid(row=0, column=0,pady=15, columnspan=3, sticky="S")
 info.grid(row=1, column=0,pady=3, columnspan=3)
 navod_button.grid(row=2, column=0, pady=7, columnspan=3)
+toggle_label.grid(row=2, column=2, pady=7,padx=5, columnspan=3, sticky="W")
+toggle_button.grid(row=2, column=2, pady=7,padx=12, columnspan=3, sticky="E")
 higher_value_label.grid(row=3, column=0,columnspan=2, pady=2)
 higher_value_input.grid(row=3, column=1,columnspan=3, pady=2)
 lower_value_label.grid(row=4, column=0, columnspan=2, pady=2)
